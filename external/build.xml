@@ -32,6 +32,28 @@
 			<property name="dockerImageTag" value="latest"/>
 		</else>
 	</if>
+	<if>
+		<contains string="${dockerImageTag}" substring="ubi-minimal" />
+		<then>
+			<property name="dockerExtension" value=".ubi-minimal"/>
+		</then>
+		<elseif>
+  			<contains string="${dockerImageTag}" substring="ubi" />
+		<then>
+			<property name="dockerExtension" value=".ubi"/>
+		</then>
+ 		</elseif>
+		<elseif>
+  			<contains string="${dockerImageTag}" substring="alpine" />
+  			<then>
+   				<property name="dockerExtension" value=".alpine"/>
+  			</then>
+ 		</elseif>
+ 		<else>
+   			<property name="dockerExtension" value=""/>
+ 		</else>
+	</if>
+
 	<target name="init" depends="docker_prune">
 		<mkdir dir="${DEST_EXTERNAL}" />
 	</target>

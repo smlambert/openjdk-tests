@@ -37,7 +37,7 @@ test=$@
 cd /openjdk-tests
 ./get.sh -t /openjdk-tests
 
-cd /openjdk-tests/TestConfig
+cd /openjdk-tests/TKG
 
 echo "Generating make files..."
 make -f run_configure.mk
