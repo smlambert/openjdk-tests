@@ -15,9 +15,11 @@
 <playlist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestConfig/playlist.xsd">
 	<test>
 		<testCaseName>derby_test_junit_all</testCaseName>
-	<command>docker run --rm $(EXTRA_DOCKER_ARGS) adoptopenjdk-derby-test:latest ; \
-		docker rmi -f adoptopenjdk-derby-test; \
-		$(TEST_STATUS)</command>
+		<command>
+			docker run --rm $(EXTRA_DOCKER_ARGS) --volumn ./test.sh:/test.sh adoptopenjdk-derby-test:latest /bash /test.sh; \
+			docker rmi -f adoptopenjdk-derby-test; \
+			$(TEST_STATUS)
+		</command>
 		<levels>
 			<level>extended</level>
 		</levels>

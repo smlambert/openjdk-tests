@@ -14,6 +14,10 @@
 
 #Set up Java to be used by the the derby-test
 
+export DERBY_HOME=/derby
+
+git clone https://github.com/apache/derby.git ${DERBY_HOME}
+
 if [ -d /java/jre/bin ];then
 	echo "Using mounted Java8"
 	export JAVA_BIN=/java/jre/bin
@@ -39,7 +43,7 @@ cd ${DERBY_HOME}
 
 pwd
 
-#clean previous build artifacts 
+#clean previous build artifacts
 ant -f ${DERBY_HOME}/build.xml clobber
 
 #build all

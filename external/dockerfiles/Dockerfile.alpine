@@ -1,0 +1,62 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This Dockerfile in external/dockerfiles dir is used to create an image with
+# AdoptOpenJDK jdk binary installed. Basic test dependent executions
+# are installed during the building process.
+
+ARG IMAGE_NAME=openjdk8
+ARG IMAGE_REGISTRY=adoptopenjdk
+ARG IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME
+ARG IMAGE_VERSION=latest
+
+FROM $IMAGE:$IMAGE_VERSION
+
+# Install test dependent executable files
+RUN apt-get update \
+    && apt-get -y install \
+    autoconf \
+    apt-transport-https \
+    bash \
+    ca-certificates \
+    curl \
+    dirmngr \
+    git \
+    gcc \
+    libtext-csv-perl \
+    libjson-perl \
+    libxml-parser-perl \
+    make \
+    maven \
+    unzip \
+    tar \
+    vim \
+    wget \
+    zip
+
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
+
+WORKDIR /
+
+# install ant
+ENV ANT_VERSION 1.10.7
+RUN wget --no-check-certificate https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz && \
+    gunzip apache-ant-${ANT_VERSION}-bin.tar.gz && \
+    tar -xvf apache-ant-${ANT_VERSION}-bin.tar
+
+ENV ANT_HOME ${WORKDIR}/apache-ant-${ANT_VERSION}
+ENV PATH ${PATH}:${ANT_HOME}/bin
+
+# install ant-contrib
+RUN wget https://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.tar.gz && \
+    tar -zxvf ant-contrib-1.0b3-bin.tar.gz && \
+    cp ant-contrib/ant-contrib-1.0b3.jar ${ANT_HOME}/lib

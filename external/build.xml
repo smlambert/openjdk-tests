@@ -33,6 +33,15 @@
 		</else>
 	</if>
 	<if>
+		<isset property="env.DOCKERIMAGE_REGISTRY"/>
+		<then>
+			<property name="dockerImageRegistry" value="${env.DOCKERIMAGE_REGISTRY}"/>
+		</then>
+		<else>
+			<property name="dockerImageRegistry" value="adoptopenjdk"/>
+		</else>
+	</if>
+	<if>
 		<contains string="${dockerImageTag}" substring="ubi-minimal" />
 		<then>
 			<property name="dockerExtension" value=".ubi-minimal"/>
