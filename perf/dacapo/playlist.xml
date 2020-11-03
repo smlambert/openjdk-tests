@@ -51,9 +51,49 @@
 		</groups>
 	</test>
 	<test>
+		<testCaseName>dacapo-h2_jdk8_hs</testCaseName>
+		<command>$(JAVA_COMMAND) -jar $(Q)$(TEST_RESROOT)$(D)dacapo.jar$(Q) h2; \
+		$(TEST_STATUS)</command>
+		<!-- Disabled via https://github.com/AdoptOpenJDK/openjdk-tests/issues/2028 -->
+		<platformRequirements>^arch.s390x</platformRequirements>
+		<subsets>
+			<subset>8</subset>
+		</subsets>
+		<levels>
+			<level>sanity</level>
+		</levels>
+		<groups>
+			<group>perf</group>
+		</groups>
+		<impls>
+			<impl>hotspot</impl>
+		</impls>
+	</test> 
+		<test>
+		<testCaseName>dacapo-h2_jdk8_j9</testCaseName>
+		<command>$(JAVA_COMMAND) -jar $(Q)$(TEST_RESROOT)$(D)dacapo.jar$(Q) h2; \
+		$(TEST_STATUS)</command>
+		<subsets>
+			<subset>8</subset>
+		</subsets>
+		<levels>
+			<level>sanity</level>
+		</levels>
+		<groups>
+			<group>perf</group>
+		</groups>
+		<impls>
+			<impl>openj9</impl>
+			<impl>ibm</impl>
+		</impls>
+	</test> 
+	<test>
 		<testCaseName>dacapo-h2</testCaseName>
 		<command>$(JAVA_COMMAND) -jar $(Q)$(TEST_RESROOT)$(D)dacapo.jar$(Q) h2; \
 		$(TEST_STATUS)</command>
+		<subsets>
+			<subset>11+</subset>
+		</subsets>
 		<levels>
 			<level>sanity</level>
 		</levels>
