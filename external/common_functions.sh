@@ -30,7 +30,7 @@ supported_packages="jdk jre"
 supported_builds="slim full"
 
 # Supported tests
-supported_tests="camel derby elasticsearch jacoco jenkins functional-test kafka lucene-solr openliberty-mp-tck payara-mp-tck quarkus quarkus_quickstarts scala system-test thorntail-mp-tck tomcat tomee wildfly wycheproof netty spring"
+supported_tests="camel derby elasticsearch jacoco jenkins external_custom functional-test kafka lucene-solr openliberty-mp-tck payara-mp-tck quarkus quarkus_quickstarts scala system-test thorntail-mp-tck tomcat tomee wildfly wycheproof netty spring"
 
 function check_version() {
     version=$1
