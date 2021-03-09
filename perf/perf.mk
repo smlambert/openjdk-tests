@@ -13,4 +13,4 @@
 ##############################################################################
 
 # Create renaissance options
-RENAISSANCE_OPTIONS = --add-opens java.base/java.util=ALL-UNNAMED
+RENAISSANCE_OPTIONS = --add-opens java.base/java.util/java.lang=ALL-UNNAMED
