@@ -12,5 +12,5 @@
 # limitations under the License.
 ##############################################################################
 
-# Create renaissance options
-RENAISSANCE_OPTIONS_JDK16ANDUP = --illegal-access=warn
+# Renaissance options
+JDK_JAVA_OPTIONS = '--add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED'
