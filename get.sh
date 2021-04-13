@@ -222,7 +222,7 @@ getBinaryOpenjdk()
 		fi
 		download_url="https://api.adoptopenjdk.net/v3/binary/latest/${JDK_VERSION}/${release_type}/${os}/${arch}/jdk/${JDK_IMPL}/${heap_size}/adoptopenjdk"
 
-		if [[ "$JDK_VERSION" -ge "11" ]]; then
+		if [ "$JDK_VERSION" != "8" ] || [ "$JDK_IMPL" != "hotspot" ]; then
 			download_url+=" https://api.adoptopenjdk.net/v3/binary/latest/${JDK_VERSION}/${release_type}/${os}/${arch}/testimage/${JDK_IMPL}/${heap_size}/adoptopenjdk"
 		fi
 	else
@@ -236,7 +236,8 @@ getBinaryOpenjdk()
 			set +e
 			count=0
 			download_exit_code=-1
-			while [ $download_exit_code != 0 ] && [ $count -le 5  ]
+			# when the command is not found (code 127), do not retry
+			while [ $download_exit_code != 0 ] && [ $download_exit_code != 127 ] && [ $count -le 5  ]
 			do
 				if [ $count -gt 0 ]; then
 					sleep_time=300
@@ -319,12 +320,16 @@ getBinaryOpenjdk()
 				if [ -d "$SDKDIR/openjdkbinary/j2sdk-image/jre" ]; then
 					extract_dir="./j2sdk-image/jre"
 				fi
-				echo "unzip $jar_name in $extract_dir..."
+				echo "Uncompressing $jar_name over $extract_dir..."
 				if [[ $jar_name == *zip || $jar_name == *jar ]]; then
 					unzip -q $jar_name -d $extract_dir
 				else
-					# some debug-image tar has parent folder. --strip 1 is used to remove it
-					gzip -cd $jar_name | tar xof - -C $extract_dir --strip 1
+					# some debug-image tar has parent folder ... strip it
+					if tar --version 2>&1 | grep GNU 2>&1; then
+						gzip -cd $jar_name | tar xof - -C $extract_dir --strip 1
+					else
+						mkdir dir.$$ && cd dir.$$ && gzip -cd ../$jar_name | tar xof - && cd * && tar cf - . | (cd ../../$extract_dir && tar xpf -) && cd ../.. && rm -rf dir.$$
+					fi
 				fi
 			else
 				if [ -d "$SDKDIR/openjdkbinary/tmp" ]; then
@@ -332,7 +337,7 @@ getBinaryOpenjdk()
 				else
 					mkdir $SDKDIR/openjdkbinary/tmp
 				fi
-				echo "unzip file: $jar_name ..."
+				echo "Uncompressing file: $jar_name ..."
 				if [[ $jar_name == *zip || $jar_name == *jar ]]; then
 					unzip -q $jar_name -d ./tmp
 				elif [[ $jar_name == *.pax* ]]; then
