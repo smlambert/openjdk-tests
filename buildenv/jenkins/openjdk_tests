@@ -219,6 +219,11 @@ if (JDK_VERSIONS.size() > 1 || JDK_IMPLS.size() > 1 || PLATFORMS.size() >1 || PL
             LABEL += "&&${params.LABEL_ADDITION}"
         }
 
+        if (params.BUILD_LIST.startsWith('perf')) {
+            // check if using non-specified LABEL, perf machines are available to send jobs to
+            LABEL += "&&ci.role.perf"
+        }
+
         println "SPEC: ${SPEC}"
         println "LABEL: ${LABEL}"
 
