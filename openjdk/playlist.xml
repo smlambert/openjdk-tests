@@ -23,27 +23,6 @@
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
 	$(JTREG_BASIC_OPTIONS) $(CUSTOM_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
-	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
-	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
-	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
-	$(Q)$(OPENJDK_DIR)$(D)$(JDK_CUSTOM_TARGET)$(Q); \
-	$(TEST_STATUS)</command>
-		<levels>
-			<level>extended</level>
-		</levels>
-		<groups>
-			<group>openjdk</group>
-		</groups>
-	</test>
-	<test>
-		<testCaseName>openj9_custom</testCaseName>
-		<variations>
-			<variation>Mode150</variation>
-			<variation>Mode650</variation>
-			<variation>Mode1000</variation>
-		</variations>
-		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) $(CUSTOM_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	$(TIMEOUT_HANDLER) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
@@ -56,10 +35,6 @@
 		<groups>
 			<group>openjdk</group>
 		</groups>
-		<impls>
-			<impl>openj9</impl>
-			<impl>ibm</impl>
-		</impls>
 	</test>
 	<test>
 		<testCaseName>hotspot_all</testCaseName>
@@ -69,16 +44,16 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JVM_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(JTREG_HOTSPOT_TEST_DIR):hotspot_all$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>9</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>9</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
@@ -90,7 +65,15 @@
 		</impls>
 	</test>
 	<test>
-		<testCaseName>jvm_native_sanity</testCaseName>
+              <testCaseName>jvm_native_sanity</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -105,22 +88,26 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_HOTSPOT_TEST_DIR):hotspot_native_sanity$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
 		<testCaseName>jvm_compiler</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -135,22 +122,26 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_HOTSPOT_TEST_DIR):hotspot_compiler$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
 		<testCaseName>runtime_nestmate</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -165,16 +156,12 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_HOTSPOT_TEST_DIR)$(D)runtime$(D)Nestmates$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -187,17 +174,17 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JVM_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_HOTSPOT_TEST_DIR):jre$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>9</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>9</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
@@ -211,8 +198,16 @@
 	<test>
 		<testCaseName>jdk_awt</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-760598580</comment>
-		</disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-760598580</comment>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -231,23 +226,27 @@
 			<level>extended</level>
 		</levels>
 		<platformRequirements>^os.osx,^os.zos</platformRequirements>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
-		</groups>
+		</groups>   
 	</test>
 	<test>
 		<testCaseName>jdk_beans</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
-			<variation>Mode150</variation>
+                      <variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -258,10 +257,6 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -274,7 +269,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -328,9 +323,9 @@
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(OPENJDK_DIR)$(D)test$(D)jdk$(D)jdk$(D)internal$(D)loader$(D)NativeLibraries$(D)Main.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>15+</subset>
-		</subsets>
+		<versions>
+			<version>15+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -356,9 +351,9 @@
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(OPENJDK_DIR)$(D)test$(D)jdk$(D)java$(D)lang$(D)ProcessBuilder$(D)checkHandles$(D)CheckHandles.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -368,7 +363,7 @@
 		<groups>
 			<group>openjdk</group>
 		</groups>
-		<platformRequirements>os.win</platformRequirements>
+		<platformRequirements>os.win,bits.64</platformRequirements>
 	</test>
 	<test>
 		<testCaseName>jdk_lang_ref_FinalizeOverride_j9</testCaseName>
@@ -384,9 +379,9 @@
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(OPENJDK_DIR)$(D)test$(D)jdk$(D)java$(D)lang$(D)ref$(D)FinalizeOverride.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>special</level>
 		</levels>
@@ -412,9 +407,9 @@
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(OPENJDK_DIR)$(D)test$(D)jdk$(D)java$(D)util$(D)zip$(D)ZipFile$(D)TestCleaner.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>special</level>
 		</levels>
@@ -434,7 +429,7 @@
 			<variation>$(TEST_VARIATION_DUMP) Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	$(TIMEOUT_HANDLER) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
@@ -458,7 +453,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-compilejdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -467,11 +462,11 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_math$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>9</subset>
-			<subset>10</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>9</version>
+			<version>10</version>
+		</versions>
 		<levels>
 			<level>special</level>
 		</levels>
@@ -487,7 +482,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -510,7 +505,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -556,7 +551,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -579,7 +574,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -597,15 +592,23 @@
 	<test>
 		<testCaseName>jdk_security3</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2123#issuecomment-758367994</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2123#issuecomment-758367994</comment>
 		</disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -616,10 +619,6 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -632,7 +631,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -650,7 +649,7 @@
 	<test>
 		<testCaseName>jdk_sound</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/73</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/73</comment>
 		</disabled>
 		<variations>
 			<variation>Mode150</variation>
@@ -658,7 +657,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -676,7 +675,7 @@
 	<test>
 		<testCaseName>jdk_swing</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/49</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/49</comment>
 		</disabled>
 		<variations>
 			<variation>Mode150</variation>
@@ -684,7 +683,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>export DISPLAY=:1; $(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -708,7 +707,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -731,7 +730,7 @@
 			<variation>$(TEST_VARIATION_DUMP) Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx1540m $(JVM_OPTIONS)$(Q) \
 	$(TIMEOUT_HANDLER) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
@@ -749,13 +748,21 @@
 	</test>
 	<test>
 		<testCaseName>jdk_time</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -766,23 +773,27 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
 		<testCaseName>jdk_management</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -793,23 +804,27 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
 		<testCaseName>jdk_jmx</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -820,10 +835,6 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -836,7 +847,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -853,6 +864,14 @@
 	</test>
 	<test>
 		<testCaseName>jdk_tools</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -870,17 +889,20 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
-	<!-- exclude jdk_jdi on openj9: https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071 -->
 	<test>
-		<testCaseName>jdk_jdi</testCaseName>
+		<testCaseName>jdk_jdi_jdk8</testCaseName>
+              <disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -898,15 +920,12 @@
 		<levels>
 			<level>sanity</level>
 		</levels>
-		<subsets>
-			<subset>8</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+		</versions>
 		<groups>
 			<group>openjdk</group>
 		</groups>
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 	</test>
 	<test>
 		<testCaseName>jdk_jfr</testCaseName>
@@ -950,9 +969,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_foreign$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>14+</subset>
-		</subsets>
+		<versions>
+			<version>14+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -962,6 +981,15 @@
 	</test>
 	<test>
 		<testCaseName>jdk_foreign_native</testCaseName>
+		<disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2218#issuecomment-770048450</comment>
+                      <version>16+</version>
+                      <impl>openj9</impl>
+		</disabled>
+        <disabled>
+                <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                <impl>ibm</impl>
+        </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -974,9 +1002,9 @@
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
 	$(Q)$(OPENJDK_DIR)$(D)test$(D)jdk$(D)java$(D)foreign$(D)TestNative.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>14+</subset>
-		</subsets>
+		<versions>
+			<version>14+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -986,16 +1014,25 @@
 		<groups>
 			<group>openjdk</group>
 		</groups>
+		<platformRequirements>bits.64,^arch.ppc,^arch.390,^arch.riscv,^os.zos,^os.sunos</platformRequirements>
 	</test>
 	<test>
 		<testCaseName>jdk_instrument</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1003,32 +1040,35 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_instrument$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
-	<!-- exclude jdk_jdi on openj9: https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071 -->
 	<!-- From jdk11 jdk_jdi is part of jdk_svc_sanity -->
 	<test>
 		<testCaseName>jdk_svc_sanity</testCaseName>
+              <disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1036,22 +1076,26 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_svc_sanity$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
-	<!-- exclude jdk_jdi on openj9: https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071 -->
 	<test>
 		<testCaseName>jdk_jdi</testCaseName>
+              <disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/1071</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -1069,25 +1113,31 @@
 		<levels>
 			<level>extended</level>
 		</levels>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<groups>
 			<group>openjdk</group>
 		</groups>
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 	</test>
 	<test>
 		<testCaseName>build</testCaseName>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
+		<testCaseName>jdk_build</testCaseName>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS)  -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1095,29 +1145,30 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):build$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
 		<testCaseName>jdk_imageio</testCaseName>
+		<disabled>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2327#issuecomment-799459653</comment>
+                      <version>16+</version>
+                      <plat>.*mac.*</plat>
+		</disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1125,10 +1176,10 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_imageio$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
@@ -1139,15 +1190,23 @@
 	<test>
 		<testCaseName>jdk_client_sanity</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-759930182</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-759930182</comment>
 		</disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1155,16 +1214,12 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_client_sanity$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -1177,7 +1232,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1185,9 +1240,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_security_infra$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
@@ -1215,9 +1270,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_native_sanity$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
@@ -1228,15 +1283,23 @@
 	<test>
 		<testCaseName>jdk_2d</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-759938221</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2137#issuecomment-759938221</comment>
 		</disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1244,33 +1307,37 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jdk_2d$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>8</subset>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>8</version>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
 	</test>
 	<test>
-		<testCaseName>jfc_demo</testCaseName>
+		<testCaseName>jdk_jfc_demo</testCaseName>
 		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2157#issuecomment-758317252</comment>
+                      <comment>https://github.com/AdoptOpenJDK/openjdk-tests/issues/2157#issuecomment-758317252</comment>
 		</disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>openj9</impl>
+              </disabled>
+              <disabled>
+                      <comment>https://github.com/eclipse/openj9/issues/10757</comment>
+                      <impl>ibm</impl>
+              </disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1278,16 +1345,12 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR):jfc_demo$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>extended</level>
 		</levels>
-		<!-- temporarily disable on openj9 due to https://github.com/eclipse/openj9/issues/10757 -->
-		<impls>
-			<impl>hotspot</impl>
-		</impls>
 		<groups>
 			<group>openjdk</group>
 		</groups>
@@ -1300,7 +1363,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1308,9 +1371,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR)/com/sun/crypto/provider/Cipher$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -1326,7 +1389,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1334,9 +1397,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR)/java/nio/Buffer$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -1352,7 +1415,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1360,9 +1423,9 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR)/sun/nio/cs/ISO8859x.java$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11+</subset>
-		</subsets>
+		<versions>
+			<version>11+</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
 		</levels>
@@ -1378,7 +1441,7 @@
 			<variation>Mode1000</variation>
 		</variations>
 		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
-	$(JTREG_BASIC_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
 	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
 	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
 	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
@@ -1386,11 +1449,37 @@
 	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
 	$(Q)$(JTREG_JDK_TEST_DIR)/tools/pack200$(Q); \
 	$(TEST_STATUS)</command>
-		<subsets>
-			<subset>11</subset>
-		</subsets>
+		<versions>
+			<version>11</version>
+		</versions>
 		<levels>
 			<level>sanity</level>
+		</levels>
+		<groups>
+			<group>openjdk</group>
+		</groups>
+	</test>
+	<test>
+		<testCaseName>jdk_vector</testCaseName>
+		<variations>
+			<variation>Mode150</variation>
+			<variation>Mode650</variation>
+			<variation>Mode1000</variation>
+		</variations>
+		<command>$(JAVA_COMMAND) -Xmx512m -jar $(Q)$(TEST_RESROOT)$(D)jtreg$(D)lib$(D)jtreg.jar$(Q) \
+	$(JTREG_BASIC_OPTIONS) $(JDK_NATIVE_OPTIONS) -vmoptions:$(Q)-Xmx512m $(JVM_OPTIONS)$(Q) \
+	-w $(Q)$(REPORTDIR)$(D)work$(Q) \
+	-r $(Q)$(TEST_RESROOT)$(D)report$(Q) \
+	-jdk:$(Q)$(TEST_JDK_HOME)$(Q) \
+	-exclude:$(Q)$(JTREG_JDK_TEST_DIR)$(D)ProblemList.txt$(Q) \
+	-exclude:$(Q)$(TEST_RESROOT)$(D)$(PROBLEM_LIST_FILE)$(Q) \
+	$(Q)$(JTREG_JDK_TEST_DIR):jdk_vector$(Q); \
+	$(TEST_STATUS)</command>
+		<versions>
+			<version>16+</version>
+		</versions>
+		<levels>
+			<level>extended</level>
 		</levels>
 		<groups>
 			<group>openjdk</group>
